@@ -1,0 +1,64 @@
+﻿@model List<StudentInfoSystem.Models.ClassModel>
+
+@{
+    ViewBag.Title = "ClassControl";
+}
+
+@{
+    StudentInfoSystem.Database.Logins logonAdmin = (StudentInfoSystem.Database.Logins)Session["LogonAdmin"];
+}
+<h4>@ViewData["error"]</h4>
+<div class="row">
+    <span class="col-md-6 col-xs-6" style="font-size:20pt">Class List</span>
+    <div class="col-md-6 col-xs-6 text-right">
+        <a class="btn btn-success" href="~/Home/ClassCreate" style="margin-right:20px;">Add Class</a>
+    </div>
+</div>
+<hr />
+<div>
+    <table class="table table-condensed table-striped table-hover text-center">
+        <thead>
+            <tr>
+                <th class="text-center">Class Name</th>
+                <th class="text-center">Number of Students</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.class1.ClassName</td>
+                    <td>@item.studentCounter</td>
+                    <td>
+                        @if (item.studentCounter == 0)
+                        {
+                            <a type="button" onclick="Delete('@Url.Action("Delete","Home", new { id = item.class1.Id })')" class="btn btn-danger ">
+                                <span class="fa fa-trash "></span> Delete
+                            </a>
+                        }
+                        else
+                        {
+                            <a type="button" onclick="Delete('@Url.Action("Delete","Home", new { id = 0 })')" class="btn btn-danger "> <span class="fa fa-trash "></span> Delete </a>
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+</div>
+
+
+
+@if (TempData["resultInfo"] != null)
+{
+    @Html.Partial("InfoModal");
+
+    <script>$('#exampleModalCenter').modal('show');</script>
+}
+@Html.Partial("ResultControl", "Are you sure you want to delete?")
+
+
+
+

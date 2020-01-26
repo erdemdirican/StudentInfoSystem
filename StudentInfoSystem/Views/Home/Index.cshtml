@@ -1,0 +1,76 @@
+﻿@model List<StudentInfoSystem.Database.Students>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    StudentInfoSystem.Database.Logins logonAdmin = (StudentInfoSystem.Database.Logins)Session["LogonAdmin"];
+}
+
+@{ int i = 1; }
+
+<div class="content_box">
+    <div class="right_bar ">
+        <div class="tab-content ">
+            <div class="tab-pane fade show active" id="lorem" role="tabpanel">
+                <table class="table table-bordered table-striped table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var students in Model)
+                        {
+                            <tr>
+                                <td>@(i++)</td>
+                                <td>@students.StudentName</td>
+                                <td>@students.StudentSurname</td>
+
+                                <td>
+                                    <a href="@Url.Action("Profil","Admin",new { id=students.Id })" class="btn btn-primary  ">Info</a>
+                                    @if (logonAdmin != null)
+                                    {
+
+                                        <a href="@Url.Action("ProfileEdit", "Admin", new { id = students.Id })" class="btn btn-warning">
+                                            <span class="glyphicon glyphicon-edit"></span>Edit
+                                        </a>
+                                        <a type="button" onclick="Delete('@Url.Action("Delete","Admin", new { id = students.Id })')" class="btn btn-danger btn">
+                                            <span class="glyphicon glyphicon-trash"></span> Delete
+                                        </a>
+                                    }
+                                    else
+                                    {
+
+                                        <a href="@Url.Action("ProfileEdit", "Admin", new { id = students.Id })" class="btn btn-warning  disabled">
+                                            <span class="glyphicon glyphicon-edit"></span>Edit
+                                        </a>
+
+                                        <a type="button" onclick="Delete('@Url.Action("Delete","Admin", new { id = students.Id })')" class="btn btn-danger disabled">
+                                            <span class="glyphicon glyphicon-trash"></span> Delete
+                                        </a>
+
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (TempData["resultInfo"] != null)
+{
+
+
+    @Html.Partial("InfoModal");
+
+    <script>$('#exampleModalCenter').modal('show');</script>
+}
+@Html.Partial("ResultControl", "Are you sure you want to delete?")

@@ -1,0 +1,90 @@
+﻿@model StudentInfoSystem.Models.StudentModel
+@{
+    ViewBag.Title = "Profile";
+}
+@{
+    StudentInfoSystem.Database.Logins logonAdmin = (StudentInfoSystem.Database.Logins)Session["LogonAdmin"];
+}
+<h2 class="col-md-6 col-xs-6" style="font-size:20pt">Student</h2>
+<hr />
+
+@{
+    ViewBag.Title = string.Format("{0}", Model.student1.StudentName);
+
+}
+
+<div class="col-md-9 " style="font-size:13pt;">
+
+    <div class="form-group col-md-10 md-offset-1">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.student1.StudentName, "Name", new { @class = "control-label col-md-2" })
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.student1.StudentName, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group col-md-10 md-offset-1">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.student1.StudentSurname, "Surname", new { @class = "control-label col-md-2" })
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.student1.StudentSurname, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group col-md-10 md-offset-1">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.student1.StudentNo, "StudentNo", new { @class = "control-label col-md-2" })
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.student1.StudentNo, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="form-group col-md-10 md-offset-1">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.className, "Class", new { @class = "control-label col-md-2" })
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(model => model.className, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    </div>
+</div>
+@if (logonAdmin == null)
+{
+    <div class="row">
+        <div class="col-md-12 text-center" style="margin-top:20px;">
+            You can login as an <a href="~/Admin/Login" style="font-weight:bold"> Admin </a> to update the information!
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+            <a href="~/Admin/ProfileEdit/@Model.student1.Id" class="btn btn-warning " style="margin-right:10px;">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+            </a>
+
+            <a type="button" onclick="Delete('@Url.Action("Delete","Admin", new { id = Model.student1.Id })')" class="btn btn-danger btn">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+            </a>
+        </div>
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+}
+
+
+@if (TempData["resultInfo"] != null)
+{
+
+
+    @Html.Partial("InfoModal");
+
+    <script>$('#exampleModalCenter').modal('show');</script>
+}
+@Html.Partial("ResultControl", "Are you sure you want to delete?")
+
+
+
+
